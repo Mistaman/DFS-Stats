@@ -3,8 +3,8 @@ import openpyxl   #http://openpyxl.readthedocs.org
 import xlsxwriter   #https://pypi.python.org/pypi/XlsxWriter / http://xlsxwriter.readthedocs.org
 
 
-colNum = 0   #column a ltter of spreadsheet
-rowNum = 0   #row number of spreadsheet
+colNum = 0   #column a ltter of DFS spreadsheet
+rowNum = 2   #row number of DFS spreadsheet
 playerFirstName = ''
 playerLastName = ''
 pFN = 2   #players first name row location
@@ -17,17 +17,19 @@ fdWB = openpyxl.load_workbook('FanDuelPlayerList.xlsx')   #read FD player stat s
 fdSheet = fdWB.get_active_sheet()
 playerFirstName = fdSheet['C' + str(pFN)]
 playerLastName = fdSheet['D' +str(pLN)]
-fdFPPG = fdSheet['E2']
-fdSalary = fdSheet['G2']
-projectedValue = (fdFPPG.value / fdSalary.value) * 1000
+fdFPPG = fdSheet['E' + str(rowNum)]
+fdSalary = fdSheet['G' + str(rowNum)]
 
 dfsWB = xlsxwriter.Workbook('DFStatsTest.xlsx')   #create xlsx file
 dfsSheet = dfsWB.add_worksheet('DFSTest')
 
 while rowNum <= fdSheet.get_highest_row():
-    print(rowNum)
-    dfsSheet.write(rowNum, colNum, projectedValue)
+    fdFPPG = fdSheet['E' + str(rowNum)]
+    fdSalary = fdSheet['G' + str(rowNum)]
+    projectedValue = ((fdFPPG.value / fdSalary.value) * 1000)
+    dfsSheet.write(rowNum-2, colNum, projectedValue)
     rowNum += 1
+
 
 dfsWB.close()
 
