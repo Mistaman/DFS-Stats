@@ -1,5 +1,5 @@
 #https://automatetheboringstuff.com
-import openpyxl
+import openpyxl   #http://openpyxl.readthedocs.org
 import xlsxwriter   #https://pypi.python.org/pypi/XlsxWriter / http://xlsxwriter.readthedocs.org
 
 
@@ -7,23 +7,27 @@ colNum = 0   #column a ltter of spreadsheet
 rowNum = 0   #row number of spreadsheet
 playerFirstName = ''
 playerLastName = ''
+pFN = 2   #players first name row location
+pLN = 2   #players last name row location
 fdFPPG = 0   #FD fanatsy points per game
 fdSalary = 0   #FD salary amount
 projectedValue = 0  #FD projected value based on FPPG / Salary
 
-fdWB = openpyxl.load_workbook('FDStats.xlsx')   #read FD player stat spreadsheet
+fdWB = openpyxl.load_workbook('FanDuelPlayerList.xlsx')   #read FD player stat spreadsheet
 fdSheet = fdWB.get_active_sheet()
-playerFirstName = fdSheet['C2']
-playerLastName = fdSheet['D2']
+playerFirstName = fdSheet['C' + str(pFN)]
+playerLastName = fdSheet['D' +str(pLN)]
 fdFPPG = fdSheet['E2']
 fdSalary = fdSheet['G2']
 projectedValue = (fdFPPG.value / fdSalary.value) * 1000
 
 dfsWB = xlsxwriter.Workbook('DFStatsTest.xlsx')   #create xlsx file
 dfsSheet = dfsWB.add_worksheet('DFSTest')
-dfsSheet.write(rowNum, colNum, projectedValue)
 
-
+while rowNum <= fdSheet.get_highest_row():
+    print(rowNum)
+    dfsSheet.write(rowNum, colNum, projectedValue)
+    rowNum += 1
 
 dfsWB.close()
 
