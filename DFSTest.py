@@ -3,20 +3,19 @@ import openpyxl   #http://openpyxl.readthedocs.org
 import xlsxwriter   #https://pypi.python.org/pypi/XlsxWriter / http://xlsxwriter.readthedocs.org
 
 
-colNum = 0   #column a ltter of DFS spreadsheet
+colNum = 3   #column a ltter of DFS spreadsheet
 rowNum = 2   #row number of DFS spreadsheet
 playerFirstName = ''
 playerLastName = ''
-pFN = 2   #players first name row location
-pLN = 2   #players last name row location
+playerPosition = ''
 fdFPPG = 0   #FD fanatsy points per game
 fdSalary = 0   #FD salary amount
 projectedValue = 0  #FD projected value based on FPPG / Salary
 
 fdWB = openpyxl.load_workbook('FanDuelPlayerList.xlsx')   #read FD player stat spreadsheet
 fdSheet = fdWB.get_active_sheet()
-playerFirstName = fdSheet['C' + str(pFN)]
-playerLastName = fdSheet['D' +str(pLN)]
+playerFirstName = fdSheet['C' + str(rowNum)]
+playerLastName = fdSheet['D' +str(rowNum)]
 fdFPPG = fdSheet['E' + str(rowNum)]
 fdSalary = fdSheet['G' + str(rowNum)]
 
