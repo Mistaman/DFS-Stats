@@ -5,28 +5,44 @@ import xlsxwriter   #https://pypi.python.org/pypi/XlsxWriter / http://xlsxwriter
 
 colNum = 3   #column a ltter of DFS spreadsheet
 rowNum = 2   #row number of DFS spreadsheet
-playerFirstName = ''
-playerLastName = ''
-playerPosition = ''
-fdFPPG = 0   #FD fanatsy points per game
-fdSalary = 0   #FD salary amount
-projectedValue = 0  #FD projected value based on FPPG / Salary
 
 fdWB = openpyxl.load_workbook('FanDuelPlayerList.xlsx')   #read FD player stat spreadsheet
 fdSheet = fdWB.get_active_sheet()
-playerFirstName = fdSheet['C' + str(rowNum)]
-playerLastName = fdSheet['D' +str(rowNum)]
-fdFPPG = fdSheet['E' + str(rowNum)]
-fdSalary = fdSheet['G' + str(rowNum)]
 
-dfsWB = xlsxwriter.Workbook('DFStatsTest.xlsx')   #create xlsx file
+dfsWB = xlsxwriter.Workbook('DFStats.xlsx')   #create xlsx file
 dfsSheet = dfsWB.add_worksheet('DFSTest')
+bold = dfsWB.add_format({'bold': True})
+
+dfsSheet.write(0, 0, 'Player Team', bold)
+dfsSheet.write(0, 1, 'Opponent', bold)
+dfsSheet.write(0, 2, 'Position', bold)
+dfsSheet.write(0, 3, 'First Name', bold)
+dfsSheet.write(0, 4, 'Last Name', bold)
+dfsSheet.write(0, 5, 'Projected Value', bold)
+dfsSheet.write(0, 6, 'FD Salary', bold)
+dfsSheet.write(0, 7, 'Injury Status', bold)
+dfsSheet.write(0, 8, 'Injury Details', bold)
 
 while rowNum <= fdSheet.get_highest_row():
-    fdFPPG = fdSheet['E' + str(rowNum)]
-    fdSalary = fdSheet['G' + str(rowNum)]
-    projectedValue = ((fdFPPG.value / fdSalary.value) * 1000)
-    dfsSheet.write(rowNum-2, colNum, projectedValue)
+    playerTeam = fdSheet['I' + str(rowNum)].value
+    playerOpp = fdSheet['J' + str(rowNum)].value
+    playerPosition = fdSheet['B' + str(rowNum)].value
+    playerFirstName = fdSheet['C' + str(rowNum)].value
+    playerLastName = fdSheet['D' + str(rowNum)].value
+    injuryStatus = fdSheet['K' + str(rowNum)].value
+    injuryDetails = fdSheet['L' + str(rowNum)].value
+    fdFPPG = fdSheet['E' + str(rowNum)]   #FD fanatsy points per game
+    fdSalary = fdSheet['G' + str(rowNum)]   #FD salary amount
+    projectedValue = ((fdFPPG.value / fdSalary.value) * 1000)   #FD projected value based on FPPG / Salary
+    dfsSheet.write(rowNum-1, 0, playerTeam)
+    dfsSheet.write(rowNum-1, 1, playerOpp)
+    dfsSheet.write(rowNum-1, 2, str(playerPosition))   #write all relevant data to xlsx sheet
+    dfsSheet.write(rowNum-1, 3, str(playerFirstName))
+    dfsSheet.write(rowNum-1, 4, str(playerLastName))
+    dfsSheet.write(rowNum-1, 5, projectedValue)
+    dfsSheet.write(rowNum-1, 6, str(fdSalary.value))
+    dfsSheet.write(rowNum-1, 7, injuryStatus)
+    dfsSheet.write(rowNum-1, 8, injuryDetails)
     rowNum += 1
 
 
