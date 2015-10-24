@@ -12,6 +12,9 @@ fdSheet = fdWB.get_active_sheet()
 dfsWB = xlsxwriter.Workbook('DFStats.xlsx')   #create xlsx file
 dfsSheet = dfsWB.add_worksheet('DFSTest')
 bold = dfsWB.add_format({'bold': True})
+cellColor = dfsWB.add_format()
+redCell = cellColor.set_bg_color('#CD5C5C')  #indianred #CD5C5C	hex code
+greenCell = cellColor.set_bg_color('#00FF7F')   #springgreen #00FF7F hex code
 
 dfsSheet.write(0, 0, 'Player Team', bold)
 dfsSheet.write(0, 1, 'Opponent', bold)
@@ -39,12 +42,17 @@ while rowNum <= fdSheet.get_highest_row():
     dfsSheet.write(rowNum-1, 2, str(playerPosition))   #write all relevant data to xlsx sheet
     dfsSheet.write(rowNum-1, 3, str(playerFirstName))
     dfsSheet.write(rowNum-1, 4, str(playerLastName))
-    dfsSheet.write(rowNum-1, 5, projectedValue)
+    if projectedValue >= 2.5:
+        dfsSheet.write(rowNum-1, 5, projectedValue, greenCell)
+    elif projectedValue < 1.0:
+        dfsSheet.write(rowNum-1, 5, projectedValue, redCell)
+    else:
+        dfsSheet.write(rowNum-1, 5, projectedValue)
+    
     dfsSheet.write(rowNum-1, 6, str(fdSalary.value))
     dfsSheet.write(rowNum-1, 7, injuryStatus)
     dfsSheet.write(rowNum-1, 8, injuryDetails)
     rowNum += 1
-
 
 dfsWB.close()
 

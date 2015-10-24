@@ -1,6 +1,6 @@
 **Add** 
 player names in correct cells -- Done
 player positions in correct cell  -- Done
-formatting for each cell
-projected points and salary for players
+formatting for each cell - Added bold, need to add color
+projected points and salary for players -- Done
 have data imported into a dictionary datatype for easier sorting
