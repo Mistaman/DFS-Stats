@@ -1,6 +1,7 @@
 #https://automatetheboringstuff.com
 import openpyxl   #http://openpyxl.readthedocs.org
 import xlsxwriter   #https://pypi.python.org/pypi/XlsxWriter / http://xlsxwriter.readthedocs.org
+#hex color codes http://cloford.com/resources/colours/500col.htm
 
 
 colNum = 3   #column a ltter of DFS spreadsheet
@@ -11,10 +12,11 @@ fdSheet = fdWB.get_active_sheet()
 
 dfsWB = xlsxwriter.Workbook('DFStats.xlsx')   #create xlsx file
 dfsSheet = dfsWB.add_worksheet('DFSTest')
+
 bold = dfsWB.add_format({'bold': True})
-cellColor = dfsWB.add_format()
-redCell = cellColor.set_bg_color('#CD5C5C')  #indianred #CD5C5C	hex code
-greenCell = cellColor.set_bg_color('#00FF7F')   #springgreen #00FF7F hex code
+redCell = dfsWB.add_format({'bg_color': '#CD5C5C'})  #indianred #CD5C5C	hex code
+greenCell = dfsWB.add_format({'bg_color': '#00FF7F'})   #springgreen #00FF7F hex code
+blueCell = dfsWB.add_format({'bg_color': '#00BFFF'})   #deepskyblue #00BFFF hex code
 
 dfsSheet.write(0, 0, 'Player Team', bold)
 dfsSheet.write(0, 1, 'Opponent', bold)
@@ -42,9 +44,11 @@ while rowNum <= fdSheet.get_highest_row():
     dfsSheet.write(rowNum-1, 2, str(playerPosition))   #write all relevant data to xlsx sheet
     dfsSheet.write(rowNum-1, 3, str(playerFirstName))
     dfsSheet.write(rowNum-1, 4, str(playerLastName))
-    if projectedValue >= 2.5:
+    if projectedValue > 2.25:
         dfsSheet.write(rowNum-1, 5, projectedValue, greenCell)
-    elif projectedValue < 1.0:
+    elif projectedValue > 1.75:
+        dfsSheet.write(rowNum-1, 5, projectedValue, blueCell)
+    elif projectedValue < 1.25:
         dfsSheet.write(rowNum-1, 5, projectedValue, redCell)
     else:
         dfsSheet.write(rowNum-1, 5, projectedValue)
