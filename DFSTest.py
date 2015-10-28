@@ -3,6 +3,8 @@ import openpyxl   #http://openpyxl.readthedocs.org
 import xlsxwriter   #https://pypi.python.org/pypi/XlsxWriter / http://xlsxwriter.readthedocs.org
 #hex color codes http://cloford.com/resources/colours/500col.htm
 
+# http://www.footballoutsiders.com/stats/teamdef  Defensive Ranking website
+
 
 colNum = 3   #column a ltter of DFS spreadsheet
 rowNum = 2   #row number of DFS spreadsheet
@@ -23,10 +25,11 @@ dfsSheet.write(0, 1, 'Opponent', bold)
 dfsSheet.write(0, 2, 'Position', bold)
 dfsSheet.write(0, 3, 'First Name', bold)
 dfsSheet.write(0, 4, 'Last Name', bold)
-dfsSheet.write(0, 5, 'Projected Value', bold)
+dfsSheet.write(0, 5, 'FPPG', bold)
 dfsSheet.write(0, 6, 'FD Salary', bold)
-dfsSheet.write(0, 7, 'Injury Status', bold)
-dfsSheet.write(0, 8, 'Injury Details', bold)
+dfsSheet.write(0, 7, 'Projected Value', bold)
+dfsSheet.write(0, 8, 'Injury Status', bold)
+dfsSheet.write(0, 9, 'Injury Details', bold)
 
 while rowNum <= fdSheet.get_highest_row():
     playerTeam = fdSheet['I' + str(rowNum)].value
@@ -39,23 +42,26 @@ while rowNum <= fdSheet.get_highest_row():
     fdFPPG = fdSheet['E' + str(rowNum)]   #FD fanatsy points per game
     fdSalary = fdSheet['G' + str(rowNum)]   #FD salary amount
     projectedValue = ((fdFPPG.value / fdSalary.value) * 1000)   #FD projected value based on FPPG / Salary
-    dfsSheet.write(rowNum-1, 0, playerTeam)
+
+    dfsSheet.write(rowNum-1, 0, playerTeam)   #write all relevant data to xlsx sheet
     dfsSheet.write(rowNum-1, 1, playerOpp)
-    dfsSheet.write(rowNum-1, 2, str(playerPosition))   #write all relevant data to xlsx sheet
+    dfsSheet.write(rowNum-1, 2, str(playerPosition))
     dfsSheet.write(rowNum-1, 3, str(playerFirstName))
     dfsSheet.write(rowNum-1, 4, str(playerLastName))
-    if projectedValue > 2.25:
-        dfsSheet.write(rowNum-1, 5, projectedValue, greenCell)
-    elif projectedValue > 1.75:
-        dfsSheet.write(rowNum-1, 5, projectedValue, blueCell)
-    elif projectedValue < 1.25:
-        dfsSheet.write(rowNum-1, 5, projectedValue, redCell)
-    else:
-        dfsSheet.write(rowNum-1, 5, projectedValue)
-    
+    dfsSheet.write(rowNum-1, 5, str(fdFPPG.value))
     dfsSheet.write(rowNum-1, 6, str(fdSalary.value))
-    dfsSheet.write(rowNum-1, 7, injuryStatus)
-    dfsSheet.write(rowNum-1, 8, injuryDetails)
+
+    if projectedValue > 2.25:
+        dfsSheet.write(rowNum-1, 7, projectedValue, greenCell)
+    elif projectedValue > 1.75:
+        dfsSheet.write(rowNum-1, 7, projectedValue, blueCell)
+    elif projectedValue < 1.25:
+        dfsSheet.write(rowNum-1, 7, projectedValue, redCell)
+    else:
+        dfsSheet.write(rowNum-1, 7, projectedValue)
+
+    dfsSheet.write(rowNum-1, 8, injuryStatus)
+    dfsSheet.write(rowNum-1, 9, injuryDetails)
     rowNum += 1
 
 dfsWB.close()
