@@ -12,7 +12,7 @@ rowNum = 2   #row number of DFS spreadsheet
 fdWB = openpyxl.load_workbook('FanDuelPlayerList.xlsx')   #read FD player stat xlsx file
 fdSheet = fdWB.get_active_sheet()
 
-defenseWB = openpyxl.load_workbook('DefensiveRanking.xlsx')    #read defesive ranking xlsx file
+defenseWB = openpyxl.load_workbook('DefensiveRanking.xlsx')    #read defensive ranking xlsx file
 defenseSheet = defenseWB.get_active_sheet()
 
 dfsWB = xlsxwriter.Workbook('DFStats.xlsx')   #create xlsx file
@@ -57,13 +57,14 @@ while rowNum <= fdSheet.get_highest_row():
     dfsSheet.write(rowNum-1, 2, str(playerFirstName))
     dfsSheet.write(rowNum-1, 3, str(playerLastName))
     dfsSheet.write(rowNum-1, 4, playerOpp)
-    
+    """
     while defRowNum <= defenseSheet.get_highest_row():
         if playerOpp != oppTeamName:
             defRowNum += 1
+            continue
         else:
             dfsSheet.write(rowNum-1, 5, oppPassRank)
-            dfsSheet.write(rowNum-1, 6, oppRushRank)
+            dfsSheet.write(rowNum-1, 6, oppRushRank)"""
         
     dfsSheet.write(rowNum-1, 7, str(fdFPPG.value))
     dfsSheet.write(rowNum-1, 8, str(fdSalary.value))
